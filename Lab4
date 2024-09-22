@@ -1,0 +1,120 @@
+Software Testing and Quality
+WK4-Lab4: Automating System Integration Testing with docker-compose
+WK4-Lab4: Automating System Integration Testing with docker-compose
+Assignment Content
+The goal of this lab exercise is to explore the use of docker-compose to automate full stack/end-to-end system integration tests. Docker-compose facilitates the creation of an entire environment of services along with their dependencies using easy to understand scripting language. The system we will use in this lab consists of a Flask simple webapp that keeps track and displays the number of visitors. The Flask app uses a Redis instance to store and counts the number of visitors. Docker-compose will be used to bring up the Flask app and its Redis dependency. Besides the app, a test driver script running on a separate container will be used to initiate an http query, parse the result, and assert the output.
+
+ 
+
+Readings:
+
+Docker compose quick tutorial
+Docker compose version 3 reference
+
+
+Steps:
+
+1- Read the docker-compose tutorial carefully and follow the instructions to build the environment.
+
+2- Build and run docker compose:
+
+$sudo docker-compose -f ./docker-compose.yml -p lab-4 build
+
+$sudo docker-compose -f ./docker-compose.yml -p lab-4 up -d
+
+3- Open-up a browser and type in and navigate to (localhost:5000); you should see the Hello World message.
+
+4- On a command terminal, use curl to retrieve the page:
+
+$curl http://localhost:5000/
+
+You should see the following:
+
+Hello World! I have been seen 10 times.
+
+5- Use the following command to parse out the number of visits from the html page
+
+ $curl -s http://localhost:5000/ |sed 's/Hello World.*\([0-9]\{1,\}\) times./\1/'
+
+  You should see the number of times the page has been visited so far
+
+ 11
+
+6- Next step is put the above curl and parsing logic in a bash script; the bash script represents a test script and should print out PASSED or FAILED.
+
+7- Add a new docker image into the docker environment. The added image is used to drive and run the testing script.
+
+
+
+Files provided:
+
+1- app.py: Flask app
+
+2- docker-compose.yml: docker compose file where environment specification will be provided
+
+3- Dockerfile.app: a docker file used for building of docker Flask app image.
+
+4- requirements.txt: python module dependencies.
+
+
+
+Deliverables:
+
+1- test.sh script: script that use curl, parses out the visits number and prints out PASSED or FAILED.
+
+2- Dockerfile.test: docker file for the test machine image.
+
+3- New docker-compose.yml file: the new docker-compose file with the test driver machine/image added to the test environment.
+
+4- Screenshots showing:
+
+Successful building of docker compose environment
+Successful run of the end to end test
+
+
+Some useful commands:
+
+     To show running services
+
+$sudo docker-compose ps --services
+
+ web
+
+  redis
+
+ test_client
+
+Get logs for a specific container
+
+ $sudo docker logs lab-4_test_client_1
+
+ Test Passed!
+
+To build/rebuild docker-compose
+
+    $sudo docker-compose -f ./docker-compose.yml -p lab-4 build
+
+To bring the entire environment up
+
+   $sudo docker-compose -f ./docker-compose.yml -p lab-4 up -d
+
+To bring the entire environment down
+
+    $sudo docker-compose -f ./docker-compose.yml -p lab-4 down
+
+app.py
+
+
+docker-compose.yml
+
+
+Dockerfile.test
+
+
+Dockerfile
+
+
+requirements.txt
+
+
+test.txt
