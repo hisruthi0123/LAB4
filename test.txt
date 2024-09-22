@@ -1,0 +1,12 @@
+!/bin/bash
+
+curl -s http://web:5000/ |sed 's/Hello World.*\([0-9]\{1,\}\) times./\1/'
+curl -s http://web:5000/ |sed 's/Hello World.*\([0-9]\{1,\}\) times./\1/'
+visits=$(curl -s http://web:5000/ |sed 's/Hello World.*\([0-9]\{1,\}\) times./\1/')
+
+if [[ $visits -eq 3 ]] 
+then
+   echo "Test Passed!"
+else
+   echo "Test failed!"
+fi

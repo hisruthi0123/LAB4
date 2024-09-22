@@ -1,0 +1,19 @@
+version: '3'
+services:
+   web:
+      build:
+         context: .
+         dockerfile: Dockerfile
+      ports:
+         - "5000:5000"
+   redis:
+      image: "redis:alpine"
+
+
+   test_client:
+      build:
+         context: .
+         dockerfile: Dockerfile.test
+      links:
+         - web
+
